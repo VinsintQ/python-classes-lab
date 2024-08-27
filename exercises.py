@@ -3,7 +3,8 @@ class Game:
     def __init__(self):
         self.turn = True
         self.winer = False
-
+        self.tie = False
+        self.count = 0
         self.board = {
             "a1": None,
             "b1": None,
@@ -16,7 +17,7 @@ class Game:
             "c3": None,
         }
         self.print_board()
-        while not self.winer:
+        while not self.winer and self.count < 9:
             self.userin = input("select a place")
             if self.userin in (  # valid inputs
                 "a1",
@@ -30,6 +31,8 @@ class Game:
                 "c3",
             ):
                 self.add(self.userin)
+                if self.count == 9:
+                    print("tie")
             else:
                 print("invalid position")
 
@@ -42,9 +45,11 @@ class Game:
         if b[self.userin]:  # check if place is not taken
             print("place is taken")
         else:
+            self.count += 1
             if self.turn:
                 self.turn = False
                 b[self.userin] = "X"
+
                 if (
                     (b["a1"] == b["a2"] == b["a3"] == "X")
                     or (b["b1"] == b["b2"] == b["b3"] == "X")
@@ -58,7 +63,9 @@ class Game:
                     print("--------")
                     print("Winner X")
                     self.winer = True
+
             else:
+
                 self.turn = True
                 b[self.userin] = "O"
                 if (
@@ -74,6 +81,7 @@ class Game:
                     print("--------")
                     print("Winner O")
                     self.winer = True
+
             print(
                 f"""
            A   B   C
